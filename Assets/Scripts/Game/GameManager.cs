@@ -25,10 +25,20 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    [SerializeField]
+    private MineGrid mineGrid;
+
     #endregion
 
     #region Properties
 
+
+    public void Start()
+    {
+
+        this.mineGrid.GenerateGrid();
+
+    }
 
 
     #endregion
