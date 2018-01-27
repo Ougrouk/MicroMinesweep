@@ -32,13 +32,24 @@ public class GridCube : MonoBehaviour {
         get { return this.cubeValueInfo; }
     }
 
+    private bool isRevealed = false;
+    public bool IsRevealed {
+        get { return this.isRevealed; }
+    }
+
     #endregion
 
+    /// <summary>
+    /// Init the cube in the grid
+    /// </summary>
     public void SetGridPosition(Vector2 gridPos, int mineValue) {
         this.gridPos = gridPos;
         this.mineValue = mineValue;
 
         this.InstantiateGridValueInfo();
+
+        // Cube are hidden by default
+        this.HideCube();
 
     }
 
@@ -48,6 +59,38 @@ public class GridCube : MonoBehaviour {
 
         cubeValue.RT.SetParent(GameManager.Instance.CubeValueInfoParent);
         cubeValue.SetCubeToFollow(this);
+
+    }
+
+    public void OnMouseDown()
+    {
+#if USELOG
+        Debug.Log("GridCube.OnMouseDown - GridCube clicked : "+this.GridPos.ToString()+", mineValue : "+this.MineValue);
+#endif
+
+        GameManager.Instance.CurrentMineGrid.RevealCube(this.GridPos);
+
+    }
+
+    public void HideCube() {
+
+        this.meshRenderer.material.color = Color.red;
+
+        this.isRevealed = false;
+
+        // TODO : Hide value info
+
+    }
+
+    public void RevealCube()
+    {
+        this.meshRenderer.material.color = Color.blue;
+
+        this.isRevealed = true;
+
+        // TODO : Reveal value info
+
+
 
     }
 

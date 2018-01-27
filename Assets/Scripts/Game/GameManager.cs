@@ -1,6 +1,14 @@
-﻿using System.Collections;
+﻿//#region Defines
+
+//#define USELOG
+
+//#endregion
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 
 public class GameManager : MonoBehaviour {
 
@@ -28,6 +36,11 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private MineGrid mineGrid;
 
+    private MineGrid currentMineGrid;
+    public MineGrid CurrentMineGrid {
+        get { return this.currentMineGrid; }
+    }
+
     [SerializeField]
     private RectTransform cubeValueInfoParent;
     public RectTransform CubeValueInfoParent {
@@ -41,6 +54,8 @@ public class GameManager : MonoBehaviour {
 
     public void Start()
     {
+
+        this.currentMineGrid = this.mineGrid;
 
         this.mineGrid.GenerateGrid();
 

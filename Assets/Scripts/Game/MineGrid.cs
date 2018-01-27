@@ -68,7 +68,7 @@ public class MineGrid : MonoBehaviour {
 
                 cube.transform.SetParent(this.GridParent);
                 cube.transform.localPosition = new Vector3(cube.CubeSize * x, cube.CubeSize * y, this.zCoordinate);
-
+                
                 cube.SetGridPosition(new Vector2(x, y), this.gridArray[y][x]);
 
                 cubeLine.Add(cube);
@@ -92,5 +92,157 @@ public class MineGrid : MonoBehaviour {
 
         return cube;
     }
+
+    public void RevealCube(int x, int y) {
+        this.RevealCube(new Vector2(x, y));
+    }
+
+
+    /// <summary>
+    /// Reveal the cube at a certain position, maybe reveal other cube too
+    /// </summary>
+    public void RevealCube(Vector2 posCube) {
+
+        GridCube cube = this.GetCube((int)posCube.x, (int)posCube.y);
+
+        if (cube != null && ! cube.IsRevealed)
+        {
+
+            cube.RevealCube();
+
+            if (cube.MineValue == 0)
+            {
+
+                // Reveal neighbour if there is no danger around you
+                if (this.NeighbourMineCount((int)cube.GridPos.x, (int)cube.GridPos.y) == 0) {
+                    this.RevealNeighbour((int)cube.GridPos.x, (int)cube.GridPos.y);
+                }
+
+            }
+            else {
+                // TODO What when we click on mine
+#if USELOG
+                Debug.Log("MineGrid.RevealCube - Cube is a Mine ! Value : "+cube.MineValue+", pos : " + posCube.ToString());
+#endif
+            }
+
+        }
+        else {
+#if USELOG
+            Debug.Log("MineGrid.RevealCube - Cube is null ! pos : "+posCube.ToString());
+#endif
+
+        }
+    }
+
+    public void RevealNeighbour(int posCubex, int posCubey) {
+
+        GridCube neighbourCube = null;
+
+        neighbourCube = this.GetCube(posCubex - 1, posCubey - 1);
+        if (neighbourCube != null)
+        {
+            this.RevealCube(posCubex - 1, posCubey - 1);
+        }
+        neighbourCube = this.GetCube(posCubex, posCubey - 1);
+        if (neighbourCube != null)
+        {
+            this.RevealCube(posCubex, posCubey - 1);
+        }
+        neighbourCube = this.GetCube(posCubex + 1, posCubey - 1);
+        if (neighbourCube != null)
+        {
+            this.RevealCube(posCubex + 1, posCubey - 1);
+        }
+
+        neighbourCube = this.GetCube(posCubex - 1, posCubey);
+        if (neighbourCube != null)
+        {
+            this.RevealCube(posCubex - 1, posCubey);
+        }
+        neighbourCube = this.GetCube(posCubex, posCubey);
+        if (neighbourCube != null)
+        {
+            this.RevealCube(posCubex, posCubey);
+        }
+        neighbourCube = this.GetCube(posCubex + 1, posCubey);
+        if (neighbourCube != null)
+        {
+            this.RevealCube(posCubex + 1, posCubey);
+        }
+
+        neighbourCube = this.GetCube(posCubex - 1, posCubey + 1);
+        if (neighbourCube != null)
+        {
+            this.RevealCube(posCubex - 1, posCubey + 1);
+        }
+        neighbourCube = this.GetCube(posCubex, posCubey + 1);
+        if (neighbourCube != null)
+        {
+            this.RevealCube(posCubex, posCubey + 1);
+        }
+        neighbourCube = this.GetCube(posCubex + 1, posCubey + 1);
+        if (neighbourCube != null)
+        {
+            this.RevealCube(posCubex + 1, posCubey + 1);
+        }
+    }
+
+    public int NeighbourMineCount(int posCubex, int posCubey) {
+
+        int mineCount = 0;
+
+        GridCube neighbourCube = null;
+        
+        neighbourCube = this.GetCube(posCubex - 1, posCubey - 1);
+        if (neighbourCube != null && neighbourCube.MineValue > 0) {
+            ++mineCount;
+        }
+        neighbourCube = this.GetCube(posCubex, posCubey - 1);
+        if (neighbourCube != null && neighbourCube.MineValue > 0)
+        {
+            ++mineCount;
+        }
+        neighbourCube = this.GetCube(posCubex + 1, posCubey - 1);
+        if (neighbourCube != null && neighbourCube.MineValue > 0)
+        {
+            ++mineCount;
+        }
+
+        neighbourCube = this.GetCube(posCubex - 1, posCubey);
+        if (neighbourCube != null && neighbourCube.MineValue > 0)
+        {
+            ++mineCount;
+        }
+        neighbourCube = this.GetCube(posCubex, posCubey);
+        if (neighbourCube != null && neighbourCube.MineValue > 0)
+        {
+            ++mineCount;
+        }
+        neighbourCube = this.GetCube(posCubex + 1, posCubey);
+        if (neighbourCube != null && neighbourCube.MineValue > 0)
+        {
+            ++mineCount;
+        }
+
+        neighbourCube = this.GetCube(posCubex - 1, posCubey + 1);
+        if (neighbourCube != null && neighbourCube.MineValue > 0)
+        {
+            ++mineCount;
+        }
+        neighbourCube = this.GetCube(posCubex, posCubey + 1);
+        if (neighbourCube != null && neighbourCube.MineValue > 0)
+        {
+            ++mineCount;
+        }
+        neighbourCube = this.GetCube(posCubex + 1, posCubey + 1);
+        if (neighbourCube != null && neighbourCube.MineValue > 0)
+        {
+            ++mineCount;
+        }
+
+        return mineCount;
+    }
+    
 
 }
