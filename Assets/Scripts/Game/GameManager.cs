@@ -28,6 +28,12 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private MineGrid mineGrid;
 
+    [SerializeField]
+    private RectTransform cubeValueInfoParent;
+    public RectTransform CubeValueInfoParent {
+        get { return this.cubeValueInfoParent; }
+    }
+
     #endregion
 
     #region Properties

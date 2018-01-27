@@ -110,3 +110,5 @@ MonoBehaviour:
   meshRenderer: {fileID: 23392327547121144}
   CubeSize: 1
   mineValue: 0
+  cubeValueInfoPrefab: {fileID: 114619270407213888, guid: 22af83a8bfd1abd43835af5415b68b53,
+    type: 2}

@@ -24,13 +24,31 @@ public class GridCube : MonoBehaviour {
         get { return this.gridPos; }
     }
 
+    [SerializeField]
+    private CubeValueInfo cubeValueInfoPrefab;
+
+    private CubeValueInfo cubeValueInfo;
+    public CubeValueInfo CubeValueInfo {
+        get { return this.cubeValueInfo; }
+    }
+
     #endregion
 
     public void SetGridPosition(Vector2 gridPos, int mineValue) {
         this.gridPos = gridPos;
         this.mineValue = mineValue;
+
+        this.InstantiateGridValueInfo();
+
     }
 
+    private void InstantiateGridValueInfo() {
 
+        CubeValueInfo cubeValue = GameObject.Instantiate<CubeValueInfo>(this.cubeValueInfoPrefab);
+
+        cubeValue.RT.SetParent(GameManager.Instance.CubeValueInfoParent);
+        cubeValue.SetCubeToFollow(this);
+
+    }
 
 }
